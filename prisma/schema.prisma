@@ -19,16 +19,17 @@ model User {
 }
 
 model Annotation {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String
   description String
   status      String
-  isTrashed   Boolean  @default(false)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  trashed     Boolean @default(false)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  @@index([userId])
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([ownerId])
 }

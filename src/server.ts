@@ -1,8 +1,15 @@
 import fastify from "fastify";
 const app = fastify();
 
-app.get("/", () => {
-  return "Hello Word";
+import { userRoute } from "./routes/user";
+import { annotationRoute } from "./routes/annotation";
+
+app.register(annotationRoute, {
+  prefix: "annotation"
+})
+
+app.register(userRoute, {
+  prefix: "user"
 })
 
 app
