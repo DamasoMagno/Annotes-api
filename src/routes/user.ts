@@ -15,6 +15,16 @@ export async function userRoute(app: FastifyInstance){
     const { name, email, password } = userSchemaBody.parse(request.body);
     const passwordHashed = await hash(password, 6);
 
+    const checkUserSameEmail = await prisma.user.findFirstOrThrow({
+      where: {
+        email
+      }
+    });
+
+    if(checkUserSameEmail){
+      return reply.status(400).send("This user already exists");
+    }
+
     const user = await prisma.user.create({
       data: {
         name,

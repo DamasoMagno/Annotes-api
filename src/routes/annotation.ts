@@ -97,16 +97,45 @@ export async function annotationRoute(app: FastifyInstance) {
     return reply.status(201).send();
   });
 
-  app.delete("/", async (request, reply) => {
-    const annotationSchemaBody = z.object({
-      id: z.string().uuid(),
+  app.patch("/trash/:annotationId", async (request, reply) => {
+    const annotationIdSchema = z.object({
+      annotationId: z.string().uuid()
+    })
+
+    const { annotationId } = annotationIdSchema.parse(request.params);
+
+    const checkAnnotationIsTrashed = await prisma.annotation.findFirst({
+      where: {
+        id: annotationId
+      }
     });
 
-    const { id  } = annotationSchemaBody.parse(request.body);
+    if(checkAnnotationIsTrashed?.trashed){
+      return reply.status(401).send("This annotation already trashed");
+    }
+
+    await prisma.annotation.update({
+      where: {
+        id: annotationId
+      },
+      data: {
+        trashed: true
+      }
+    });
+
+    return reply.status(201).send()
+  })
+
+  app.delete("/:annotationId", async (request, reply) => {
+    const annotationSchemaBody = z.object({
+      annotationId: z.string().uuid(),
+    });
+
+    const { annotationId  } = annotationSchemaBody.parse(request.params);
 
     await prisma.annotation.delete({
       where: {
-        id,
+        id: annotationId,
       },
     });
 

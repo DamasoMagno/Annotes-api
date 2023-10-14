@@ -1,12 +1,12 @@
 # RF
 - [ ] User should be able to login with Google or Email and Password
-- [ ] User should be able to register with Name, Email and Password
+- [ X ] User should be able to register with Name, Email and Password
 - [ ] User should be able to logout aplication
-- [ ] User should be able create a anotation
-- [ ] User should be able update a anotation 
-- [ ] User should be able send anotation to trash
-- [ ] User should be able allow others users update your annotation
-- [ ] User should be able remove single or many anotations from trash
+- [ X ] User should be able create a anotation
+- [ X ] User should be able update a anotation 
+- [ X ] User should be able send anotation to trash
+- [ X ] User should be able allow others users update your annotation
+- [ X ] User should be able remove single or many anotations from trash
 - [ ] User should be able share anotation
 - [ ] User should be able find anotation by name
 - [ ] User should be able find anotation by tag
