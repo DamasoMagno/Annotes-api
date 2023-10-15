@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { createUserService } from "../services/create-user-service";
 
-export async function remoteAnnotationTrashController(
+export async function createUserController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
@@ -17,6 +17,7 @@ export async function remoteAnnotationTrashController(
 
   try {
     await createUserService({ email,name,password });
+    
     return reply.status(201).send();
   } catch (error) {
     return reply.status(201).send();

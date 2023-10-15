@@ -7,10 +7,12 @@ interface IUser {
   password: string;
 }
 
-export async function createUserService({ name, email, password }: IUser){
-  const passwordHashed = await hash(password, 6);
-
-  const checkUserSameEmail = await prisma.user.findFirstOrThrow({
+export async function createUserService({ 
+  name, 
+  email, 
+  password 
+}: IUser){
+  const checkUserSameEmail = await prisma.user.findFirst({
     where: {
       email,
     },
@@ -19,6 +21,8 @@ export async function createUserService({ name, email, password }: IUser){
   if (checkUserSameEmail) {
     throw new Error("This user already exists");
   }
+
+  const passwordHashed = await hash(password, 6);
 
   await prisma.user.create({
     data: {

@@ -3,11 +3,14 @@ const app = fastify();
 
 import { userRoute } from "./routes/user";
 import { annotationRoute } from "./routes/annotation";
+import { trashRoute } from "./routes/trash";
 
 app.register(annotationRoute, {
   prefix: "annotation"
 })
-
+app.register(trashRoute, {
+  prefix: "trash"
+})
 app.register(userRoute, {
   prefix: "user"
 })
