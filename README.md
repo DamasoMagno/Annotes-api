@@ -9,7 +9,7 @@
 - [ X ] User should be able remove single or many anotations from trash
 - [ X ] User should be able share anotation
 - [ X ] User should be able find anotation by name
-- [ ] User should be able find anotation by tag
+- [ X ] User should be able find anotation by tag
 - [ ] User should be able find anotation by creation or favorite
 - [ ] User should be able recover your annotation from trash before 7 days
 

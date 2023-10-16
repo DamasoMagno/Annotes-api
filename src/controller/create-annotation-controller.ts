@@ -11,6 +11,7 @@ export async function createAnnotationController(
     title: z.string(),
     description: z.string(),
     status: z.enum(["public", "private"]),
+    tags: z.array(z.string())
   });
 
   const annotationsOwnerSchema = z.object({
@@ -18,7 +19,7 @@ export async function createAnnotationController(
   });
   const { ownerid: ownerId } = annotationsOwnerSchema.parse(request.headers);
 
-  const { title, description, status } = annotationSchemaBody.parse(
+  const { title, description, status, tags } = annotationSchemaBody.parse(
     request.body
   );
 
@@ -28,6 +29,7 @@ export async function createAnnotationController(
       description,
       status,
       ownerId,
+      tags
     });
 
     return reply.status(201).send();

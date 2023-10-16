@@ -11,14 +11,17 @@ export async function listAnnotationsController(
     ownerid: z.string().uuid(),
   });
   const annotationsFilter = z.object({
-    title: z.string().optional()
+    title: z.string().optional(),
+    tags: z.string().optional()
   })
 
   const { ownerid: ownerId } = annotationsOwnerSchema.parse(request.headers);
-  const { title } = annotationsFilter.parse(request.query);
+  const { title, tags } = annotationsFilter.parse(request.query);
+
+  const tagsFormatted = tags?.split(',')
 
   try {
-    const annotations = await listAnnotationsService({ ownerId, title });
+    const annotations = await listAnnotationsService({ ownerId, title, tags: tagsFormatted });
 
     return reply.status(201).send(annotations);
   } catch (error) {

@@ -9,13 +9,20 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  photo_url     String?
-  name          String
-  email         String
-  password      String
-  annotations   Annotation[]
-  notifications Notification[]
+  id        String  @id @default(uuid())
+  photo_url String?
+  name      String
+  email     String
+  password  String
+
+  Annotation   Annotation[]
+  Notification Notification[]
+}
+
+model Tag {
+  id               String             @id @default(uuid())
+  name             String
+  TagsOnAnnotation TagsOnAnnotation[]
 }
 
 model Annotation {
@@ -28,9 +35,21 @@ model Annotation {
   updated_at  DateTime  @updatedAt
   ownerId     String
 
-  owner User @relation(fields: [ownerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  owner User               @relation(fields: [ownerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  tags  TagsOnAnnotation[]
 
   @@index([ownerId])
+}
+
+model TagsOnAnnotation {
+  tag          Tag        @relation(fields: [tagId], references: [id])
+  tagId        String
+  annotation   Annotation @relation(fields: [annotationId], references: [id])
+  annotationId String
+
+  @@id([tagId, annotationId])
+  @@index([annotationId])
+  @@index([tagId])
 }
 
 model Notification {

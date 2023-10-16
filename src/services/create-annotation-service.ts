@@ -5,15 +5,17 @@ interface IAnnotation {
   description: string;
   status: 'public' | 'private';
   ownerId: string;
+  tags: string[];
 }
  
 export async function createAnnotationService({ 
   title,
   description,
   ownerId,
-  status 
+  status,
+  tags
 }: IAnnotation){
-  await prisma.annotation.create({
+  const annotation = await prisma.annotation.create({
     data: {
       title,
       description,
@@ -23,4 +25,21 @@ export async function createAnnotationService({
       updated_at: new Date(),
     },
   });
+
+  for (const tag of tags) {
+    await prisma.tag.create({
+      data: {
+        name: tag,
+        annotations: {
+          create: {
+            annotation: {
+              connect: {
+                id: annotation.id
+              }
+            }
+          }
+        }
+      }
+    }) 
+  }
 }
