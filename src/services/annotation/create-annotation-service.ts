@@ -1,26 +1,26 @@
-import prisma from "../libs/prisma";
+import prisma from "../../libs/prisma";
 
 interface IAnnotation {
   title: string;
-  description: string;
+  content: string;
   status: 'public' | 'private';
-  ownerId: string;
+  user_id: string;
   tags: string[];
 }
  
 export async function createAnnotationService({ 
   title,
-  description,
-  ownerId,
+  content,
+  user_id,
   status,
   tags
 }: IAnnotation){
   const annotation = await prisma.annotation.create({
     data: {
       title,
-      description,
+      content,
       status,
-      ownerId,
+      user_id,
       created_at: new Date(),
       updated_at: new Date(),
     },

@@ -1,13 +1,13 @@
-import prisma from "../libs/prisma";
+import prisma from "../../libs/prisma";
 
 interface IAnnotationTrash {
-  ownerId: string;
+  user_id: string;
   title?: string;
   tags?: string[];
 }
 
 export async function listAnnotationsService({
-  ownerId,
+  user_id,
   title,
   tags
 }: IAnnotationTrash) {
@@ -16,7 +16,7 @@ export async function listAnnotationsService({
       title: {
         contains: title,
       },
-      ownerId,
+      user_id,
       tags: {
           some: {
             tag: {
@@ -43,12 +43,12 @@ export async function listAnnotationsService({
   const annotationsFormatted = annotations.map((annotation) => ({
     id: annotation.id,
     title: annotation.title,
-    description: annotation.description,
+    content: annotation.content,
     status: annotation.status,
     trashed_at: annotation.trashed_at,
     created_at: annotation.created_at,
     updated_at: annotation.updated_at,
-    ownerId: annotation.ownerId,
+    ownerId: annotation.user_id,
     tags: annotation.tags.map((tagObj) => ({
       name: tagObj.tag.name,
     })),

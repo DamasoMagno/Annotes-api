@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { removeAnnotationFromTrashService } from "../services/remove-annotation-from-trash-service";
+import { removeAnnotationFromTrashService } from "../../services/trash/remove-annotation-from-trash-service";
 
 export async function removeAnnotationFromTrashController(
   request: FastifyRequest,

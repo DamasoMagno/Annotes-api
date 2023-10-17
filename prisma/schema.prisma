@@ -9,56 +9,56 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  photo_url String?
-  name      String
-  email     String
-  password  String
-
-  Annotation   Annotation[]
-  Notification Notification[]
+  id            String         @id @default(uuid())
+  photo_url     String?
+  name          String
+  email         String
+  password      String
+  notifications Notification[]
+  annotations   Annotation[]
 }
 
 model Tag {
-  id               String             @id @default(uuid())
-  name             String
-  TagsOnAnnotation TagsOnAnnotation[]
+  id          String             @id @default(uuid())
+  name        String
+  annotations TagsOnAnnotation[]
 }
 
 model Annotation {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  status      String
-  trashed_at  DateTime?
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  ownerId     String
+  id           String             @id @default(uuid())
+  title        String
+  content      String
+  status       String
+  trashed_at   DateTime?
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @updatedAt
+  user         User               @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user_id      String
+  tags         TagsOnAnnotation[]
+  notification Notification[]
 
-  owner User               @relation(fields: [ownerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tags  TagsOnAnnotation[]
-
-  @@index([ownerId])
+  @@index([user_id])
 }
 
 model TagsOnAnnotation {
-  tag          Tag        @relation(fields: [tagId], references: [id])
-  tagId        String
-  annotation   Annotation @relation(fields: [annotationId], references: [id])
-  annotationId String
+  tag           Tag        @relation(fields: [tag_id], references: [id])
+  tag_id        String
+  annotation    Annotation @relation(fields: [annotation_id], references: [id])
+  annotation_id String
 
-  @@id([tagId, annotationId])
-  @@index([annotationId])
-  @@index([tagId])
+  @@id([tag_id, annotation_id])
+  @@index([annotation_id])
+  @@index([tag_id])
 }
 
 model Notification {
-  id            String @id @default(uuid())
-  message       String
-  userId        String
+  id            String     @id @default(uuid())
+  type          String
+  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id       String
+  annotation    Annotation @relation(fields: [annotation_id], references: [id])
   annotation_id String
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([userId])
+  @@index([user_id])
+  @@index([annotation_id])
 }

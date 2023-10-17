@@ -1,13 +1,13 @@
-import prisma from "../libs/prisma";
+import prisma from "../../libs/prisma";
 
 interface IAnnotationTrash {
-  ownerId: string;
+  user_id: string;
 }
 
-export async function listTrashedAnnotationsService({ ownerId }: IAnnotationTrash){
+export async function listTrashedAnnotationsService({ user_id }: IAnnotationTrash){
   const annotations = await prisma.annotation.findMany({
     where: {
-      ownerId,
+      user_id,
       trashed_at: {
         not: null
       }

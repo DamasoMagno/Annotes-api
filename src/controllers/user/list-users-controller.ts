@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
-import { listUserService } from "../services/list-user-service";
+import { listUserService } from "../../services/user/list-user-service";
 
 export async function listAnnotationsController(
   request: FastifyRequest,

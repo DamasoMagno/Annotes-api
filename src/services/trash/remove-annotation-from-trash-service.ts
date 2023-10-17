@@ -1,10 +1,11 @@
-import prisma from "../libs/prisma";
+import prisma from "../../libs/prisma";
 
 interface IAnnotationTrash {
   annotationId: string;
 }
 
-export async function sendAnnotationToTrashService({ annotationId }: IAnnotationTrash){
+export async function removeAnnotationFromTrashService({ annotationId }: IAnnotationTrash){
+
   const checkAnnotationIsTrashed = await prisma.annotation.findFirst({
     where: {
       id: annotationId
@@ -12,15 +13,12 @@ export async function sendAnnotationToTrashService({ annotationId }: IAnnotation
   });
 
   if(checkAnnotationIsTrashed?.trashed_at){
-    throw new Error("This annotation already trashed");
+    throw new Error("This annotation removed from system");
   }
 
-  await prisma.annotation.update({
+  await prisma.annotation.delete({
     where: {
       id: annotationId
     },
-    data: {
-      trashed_at: new Date()
-    }
   });
 }

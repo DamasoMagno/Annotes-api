@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { sendAnnotationToTrashService } from "../services/send-annotation-to-trash-service";
+import { sendAnnotationToTrashService } from "../../services/annotation/send-annotation-to-trash-service";
 
 export async function sendoAnnotationToTrashController(
   request: FastifyRequest, 

@@ -1,19 +1,19 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { removeAnnotationsFromTrashService } from "../services/remove-annotations-from-trash";
+import { removeAnnotationsFromTrashService } from "../../services/trash/remove-annotations-from-trash";
 
 export async function removeAnnotationsFromTrashController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
   const annotationsOwnerSchema = z.object({
-    ownerid: z.string().uuid(),
+    user_id: z.string().uuid(),
   });
-  const { ownerid: ownerId } = annotationsOwnerSchema.parse(request.headers);
+  const { user_id } = annotationsOwnerSchema.parse(request.headers);
 
   try {
-    await removeAnnotationsFromTrashService({ ownerId });
+    await removeAnnotationsFromTrashService({ user_id });
 
     return reply.status(201).send();
   } catch (error) {

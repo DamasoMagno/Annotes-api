@@ -1,17 +1,17 @@
-import prisma from "../libs/prisma";
+import prisma from "../../libs/prisma";
 
 interface IAnnotationUpdate {
   id: string;
   title?: string;
-  description?: string;
-  ownerId: string;
+  content?: string;
+  user_id: string;
 }
 
 export async function updateAnnotationService({ 
   id, 
   title,
-  description,
-  ownerId 
+  content,
+  user_id 
 }: IAnnotationUpdate){
   const checkAnnotation = await prisma.annotation.findFirst({
     where: {
@@ -21,8 +21,7 @@ export async function updateAnnotationService({
 
   if (
     checkAnnotation?.status === "private" &&
-    checkAnnotation?.ownerId !== ownerId
-    
+    checkAnnotation?.user_id !== user_id
   ) {
     throw new Error("You don't have permission to update this annotation");
   }
@@ -33,7 +32,17 @@ export async function updateAnnotationService({
     },
     data: {
       title,
-      description,
+      content,
     },
   });
+
+  if(checkAnnotation?.user_id !== user_id){
+    await prisma.notification.create({
+      data: {
+        annotation_id: id,
+        type: "atualizou uma anotação",
+        user_id
+      }      
+    })
+  }
 }

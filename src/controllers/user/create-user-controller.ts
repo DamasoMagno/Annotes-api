@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { createUserService } from "../services/create-user-service";
+import { createUserService } from "../../services/user/create-user-service";
 
 export async function createUserController(
   request: FastifyRequest,
@@ -15,12 +15,16 @@ export async function createUserController(
 
   const { name, email, password } = userSchemaBody.parse(request.body);
 
-  try {
-    await createUserService({ email,name,password });
-    
+  try {    
+    await createUserService({
+      email,
+      name,
+      password
+    })
+
     return reply.status(201).send();
   } catch (error) {
-    return reply.status(201).send();
+    return reply.status(201).send(error);
   }
 
 }

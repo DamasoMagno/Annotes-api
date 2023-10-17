@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { updateAnnotationStatusService } from "../services/update-annotation-status-service";
+import { updateAnnotationStatusService } from "../../services/annotation/update-annotation-status-service";
 
 export async function updateAnnotationStatusController(
   request: FastifyRequest, 
@@ -12,9 +12,9 @@ export async function updateAnnotationStatusController(
     status: z.enum(['public', 'private']),  });
 
     const annotationsOwnerSchema = z.object({
-      ownerid: z.string().uuid(),
+      user_id: z.string().uuid(),
     });
-    const { ownerid: ownerId } = annotationsOwnerSchema.parse(request.headers);
+    const { user_id } = annotationsOwnerSchema.parse(request.headers);
 
   const { id, status } = annotationStatusSchema.parse(request.body);
 
@@ -23,7 +23,7 @@ export async function updateAnnotationStatusController(
     await updateAnnotationStatusService({
       id,
       status,
-      ownerId
+      user_id
     });
 
     return reply.send();
