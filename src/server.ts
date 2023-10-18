@@ -2,7 +2,7 @@ import fastify from "fastify";
 import jwtFas from "@fastify/jwt";
 import nodeCron from "node-cron";
 
-import prisma from "./libs/prisma"
+import prisma from "./libs/prisma";
 const app = fastify();
 
 import { userRoute } from "./routes/user";
@@ -16,42 +16,39 @@ app.register(annotationRoute, { prefix: "annotation" });
 app.register(trashRoute, { prefix: "trash" });
 app.register(userRoute, { prefix: "user" });
 
-async function removeAnnotations(){
-  const annotationsOnTrash = await prisma.annotation.findMany({
-    where: {
-      trashed_at: {
-        not: null
-      }
-    }
-  });
+async function removeAnnotations() {
+  try {
+    const today = new Date();
 
-  const findAnnotationWithTrashToday = annotationsOnTrash.filter(annotation => {
-    const annotationDayToTrash = new Date(annotation.trashed_at ?? 0).getDate();
-    const currentDay = new Date().getDate();
-    const daysLeftToDeleteAnnotationFromTrash = currentDay - annotationDayToTrash;
+    const annotationsOnTrash = await prisma.annotation.findMany({
+      where: {
+        trashed_at: {
+          not: null,
+          gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+          lt: new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate() + 1
+          ),
+        },
+      },
+    });
 
-    return daysLeftToDeleteAnnotationFromTrash === 0
-  });
-
-  for(const annotation of findAnnotationWithTrashToday){
-    try {
+    for (const annotation of annotationsOnTrash) {
       await prisma.annotation.delete({
         where: {
-          id: annotation.id
-        }
-      })
-
-      console.log("Anotação removida")
-    } catch (e) {
-      console.log(e)
+          id: annotation.id,
+        },
+      });
     }
-
+  } catch (error) {
+    console.log(error);
   }
 }
 
-nodeCron.schedule('* * * * *', async () => {
+nodeCron.schedule("* * * * *", async () => {
   await removeAnnotations();
-})
+});
 
 app
   .listen({
