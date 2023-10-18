@@ -3,15 +3,14 @@ import { z } from "zod";
 
 import { removeAnnotationFromTrashService } from "../../services/trash/remove-annotation-from-trash-service";
 
-export async function removeAnnotationFromTrashController(
+export async function removeAnnotationsFromTrashController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const annotationIdSchema = z.object({
+  const annotationsOwnerSchema = z.object({
     annotationId: z.string().uuid(),
   });
-
-  const { annotationId } = annotationIdSchema.parse(request.params);
+  const { annotationId } = annotationsOwnerSchema.parse(request.params);
 
   try {
     await removeAnnotationFromTrashService({ annotationId });

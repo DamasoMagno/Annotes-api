@@ -7,12 +7,12 @@ interface IAnnotationUpdate {
   user_id: string;
 }
 
-export async function updateAnnotationService({ 
-  id, 
+export async function updateAnnotationService({
+  id,
   title,
   content,
-  user_id 
-}: IAnnotationUpdate){
+  user_id,
+}: IAnnotationUpdate) {
   const checkAnnotation = await prisma.annotation.findFirst({
     where: {
       id,
@@ -28,21 +28,11 @@ export async function updateAnnotationService({
 
   await prisma.annotation.update({
     where: {
-      id
+      id,
     },
     data: {
       title,
       content,
     },
   });
-
-  if(checkAnnotation?.user_id !== user_id){
-    await prisma.notification.create({
-      data: {
-        annotation_id: id,
-        type: "atualizou uma anotação",
-        user_id
-      }      
-    })
-  }
 }

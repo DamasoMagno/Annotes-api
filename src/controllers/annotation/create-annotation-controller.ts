@@ -11,12 +11,14 @@ export async function createAnnotationController(
     title: z.string(),
     content: z.string(),
     status: z.enum(["public", "private"]),
-    tags: z.array(z.string())
+    tags: z.array(z.string()),
   });
 
   const annotationsOwnerSchema = z.object({
     user_id: z.string().uuid(),
   });
+  
+
   const { user_id } = annotationsOwnerSchema.parse(request.headers);
 
   const { title, content, status, tags } = annotationSchemaBody.parse(
@@ -29,7 +31,7 @@ export async function createAnnotationController(
       content,
       status,
       user_id,
-      tags
+      tags,
     });
 
     return reply.status(201).send();

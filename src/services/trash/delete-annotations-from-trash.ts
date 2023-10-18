@@ -4,10 +4,12 @@ interface IAnnotationTrash {
   user_id: string;
 }
 
-export async function removeAnnotationsFromTrashService({ user_id }: IAnnotationTrash){
+export async function deleteAnnotationsFromTrashService({
+  user_id,
+}: IAnnotationTrash) {
   await prisma.annotation.deleteMany({
     where: {
-      user_id
+      user_id,
     },
   });
 }

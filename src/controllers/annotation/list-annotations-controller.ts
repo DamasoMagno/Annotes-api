@@ -10,18 +10,24 @@ export async function listAnnotationsController(
   const annotationsOwnerSchema = z.object({
     user_id: z.string().uuid(),
   });
+
   const annotationsFilter = z.object({
     title: z.string().optional(),
-    tags: z.string().optional()
-  })
+    tags: z.string().optional(),
+  });
 
   const { user_id } = annotationsOwnerSchema.parse(request.headers);
+  
   const { title, tags } = annotationsFilter.parse(request.query);
 
-  const tagsFormatted = tags?.split(',')
+  const tagsFormatted = tags?.split(",");
 
   try {
-    const annotations = await listAnnotationsService({ user_id, title, tags: tagsFormatted });
+    const annotations = await listAnnotationsService({
+      user_id,
+      title,
+      tags: tagsFormatted,
+    });
 
     return reply.status(201).send(annotations);
   } catch (error) {

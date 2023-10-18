@@ -9,7 +9,7 @@ interface IAnnotationTrash {
 export async function listAnnotationsService({
   user_id,
   title,
-  tags
+  tags,
 }: IAnnotationTrash) {
   const annotations = await prisma.annotation.findMany({
     where: {
@@ -18,24 +18,24 @@ export async function listAnnotationsService({
       },
       user_id,
       tags: {
-          some: {
-            tag: {
-              name: {
-                in: tags
-              }
-            }
-          }
-        }
+        some: {
+          tag: {
+            name: {
+              in: tags,
+            },
+          },
+        },
+      },
     },
     include: {
       tags: {
         select: {
           tag: {
             select: {
-              name: true
-            }
-          }
-        }
+              name: true,
+            },
+          },
+        },
       },
     },
   });

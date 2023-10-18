@@ -1,17 +1,16 @@
 import prisma from "../../libs/prisma";
 
-
-interface IAnnotationUpdateStatus {
+interface IAnnotationStatus {
   id: string;
-  status: 'public' | 'private';
+  status: "public" | "private";
   user_id: string;
 }
 
 export async function updateAnnotationStatusService({
   id,
   user_id,
-  status
-}: IAnnotationUpdateStatus){
+  status,
+}: IAnnotationStatus) {
   const annotationPrivate = await prisma.annotation.findFirst({
     where: { id },
   });

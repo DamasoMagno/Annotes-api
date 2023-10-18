@@ -3,18 +3,18 @@ import prisma from "../../libs/prisma";
 interface IAnnotation {
   title: string;
   content: string;
-  status: 'public' | 'private';
+  status: "public" | "private";
   user_id: string;
   tags: string[];
 }
- 
-export async function createAnnotationService({ 
+
+export async function createAnnotationService({
   title,
   content,
   user_id,
   status,
-  tags
-}: IAnnotation){
+  tags,
+}: IAnnotation) {
   const annotation = await prisma.annotation.create({
     data: {
       title,
@@ -34,12 +34,12 @@ export async function createAnnotationService({
           create: {
             annotation: {
               connect: {
-                id: annotation.id
-              }
-            }
-          }
-        }
-      }
-    }) 
+                id: annotation.id,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }

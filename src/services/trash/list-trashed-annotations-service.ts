@@ -4,15 +4,17 @@ interface IAnnotationTrash {
   user_id: string;
 }
 
-export async function listTrashedAnnotationsService({ user_id }: IAnnotationTrash){
+export async function listTrashedAnnotationsService({
+  user_id,
+}: IAnnotationTrash) {
   const annotations = await prisma.annotation.findMany({
     where: {
       user_id,
       trashed_at: {
-        not: null
-      }
+        not: null,
+      },
     },
   });
 
-  return annotations
+  return annotations;
 }
