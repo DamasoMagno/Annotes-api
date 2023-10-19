@@ -20,7 +20,7 @@ async function removeAnnotations() {
   try {
     const today = new Date();
 
-    const annotationsOnTrash = await prisma.annotation.findMany({
+    await prisma.annotation.deleteMany({
       where: {
         trashed_at: {
           not: null,
@@ -33,20 +33,12 @@ async function removeAnnotations() {
         },
       },
     });
-
-    for (const annotation of annotationsOnTrash) {
-      await prisma.annotation.delete({
-        where: {
-          id: annotation.id,
-        },
-      });
-    }
   } catch (error) {
     console.log(error);
   }
 }
 
-nodeCron.schedule("* * * * *", async () => {
+nodeCron.schedule('0 0 * * *', async () => {
   await removeAnnotations();
 });
 
