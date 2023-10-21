@@ -3,14 +3,16 @@ import { z } from "zod";
 
 import { listTrashedAnnotationsService } from "../../services/trash/list-trashed-annotations-service";
 
+interface JwtUser {
+  sub: string; 
+}
+
+
 export async function listTrashedAnnotationsController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const annotationsOwnerSchema = z.object({
-    user_id: z.string().uuid(),
-  });
-  const { user_id } = annotationsOwnerSchema.parse(request.headers);
+  const { sub: user_id } = request.user as JwtUser;
 
   try {
     const annotations = await listTrashedAnnotationsService({ user_id });

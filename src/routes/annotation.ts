@@ -7,9 +7,17 @@ import { sendoAnnotationToTrashController } from "../controllers/annotation/send
 import { listAnnotationsController } from "../controllers/annotation/list-annotations-controller";
 
 export async function annotationRoute(app: FastifyInstance) {
+  app.addHook('preHandler', async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch (error) {
+      reply.status(401).send({ error: 'Unauthorized' });
+    }
+  });
+
   app.get("/", listAnnotationsController);
   app.post("/", createAnnotationController);
-  app.patch("/", updateAnnotationController);
-  app.patch("/status", updateAnnotationStatusController);
+  app.patch("/:annotationId", updateAnnotationController);
+  app.patch("/:annotationId/status", updateAnnotationStatusController);
   app.delete("/:annotationId", sendoAnnotationToTrashController);
 }

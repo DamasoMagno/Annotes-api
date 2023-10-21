@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
+import { authenticateUser } from "../../services/user/authenticate-user-service"
+
 export async function authenticateController(
   request: FastifyRequest,
   reply: FastifyReply
@@ -13,6 +15,12 @@ export async function authenticateController(
   const { email, password } = authenticateSchemaBody.parse(request.body);
 
   try {    
+    const token = await authenticateUser({
+      email,
+      password
+    })
+
+    return reply.status(201).send(token)
   } catch (error) {
     return reply.status(201).send();
   }

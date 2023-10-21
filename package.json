@@ -20,9 +20,11 @@
   "dependencies": {
     "@fastify/jwt": "^7.2.2",
     "@prisma/client": "^5.4.2",
+    "@types/jsonwebtoken": "^9.0.4",
     "@types/node-cron": "^3.0.9",
     "bcryptjs": "^2.4.3",
     "fastify": "^4.23.2",
+    "jsonwebtoken": "^9.0.2",
     "node-cron": "^3.0.2",
     "zod": "^3.22.4"
   }

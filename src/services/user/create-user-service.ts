@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 import prisma from "../../libs/prisma";
 
 interface IUser {
@@ -17,11 +18,13 @@ export async function createUserService({ name, email, password }: IUser) {
     throw new Error("User already exists");
   }
 
+  const passwordHashed = await hash(password, 6)
+
   await prisma.user.create({
     data: {
       email,
       name,
-      password,
+      password: passwordHashed,
     },
   });
 }

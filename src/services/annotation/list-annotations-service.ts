@@ -17,7 +17,7 @@ export async function listAnnotationsService({
         contains: title,
       },
       user_id,
-      tags: {
+      tags: tags ? {
         some: {
           tag: {
             name: {
@@ -25,7 +25,7 @@ export async function listAnnotationsService({
             },
           },
         },
-      },
+      } : {}
     },
     include: {
       tags: {
@@ -40,6 +40,7 @@ export async function listAnnotationsService({
     },
   });
 
+
   const annotationsFormatted = annotations.map((annotation) => ({
     id: annotation.id,
     title: annotation.title,
@@ -53,6 +54,7 @@ export async function listAnnotationsService({
       name: tagObj.tag.name,
     })),
   }));
+
 
   return annotationsFormatted;
 }

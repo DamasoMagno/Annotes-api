@@ -4,6 +4,7 @@ interface IAnnotationUpdate {
   id: string;
   title?: string;
   content?: string;
+  tags?: string[];
   user_id: string;
 }
 

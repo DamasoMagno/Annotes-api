@@ -3,27 +3,26 @@ import { z } from "zod";
 
 import { updateAnnotationStatusService } from "../../services/annotation/update-annotation-status-service";
 
+interface JwtUser {
+  sub: string;
+}
+
 export async function updateAnnotationStatusController(
   request: FastifyRequest,
   reply: FastifyReply
-) {
-  const annotationStatusSchema = z.object({
-    id: z.string().uuid(),
-    status: z.enum(["public", "private"]),
+) {  
+  const annotationIdSchema = z.object({
+    annotationId: z.string().uuid(),
   });
 
-  const annotationsOwnerSchema = z.object({
-    user_id: z.string().uuid(),
-  });
+  const { annotationId } = annotationIdSchema.parse(request.params);
 
-  const { user_id } = annotationsOwnerSchema.parse(request.headers);
+  const { sub: user_id } = request.user as JwtUser;
 
-  const { id, status } = annotationStatusSchema.parse(request.body);
 
   try {
     await updateAnnotationStatusService({
-      id,
-      status,
+      id: annotationId,
       user_id,
     });
 

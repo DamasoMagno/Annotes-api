@@ -3,6 +3,10 @@ import { z } from "zod";
 
 import { createAnnotationService } from "../../services/annotation/create-annotation-service";
 
+interface JwtUser {
+  sub: string;
+}
+
 export async function createAnnotationController(
   request: FastifyRequest,
   reply: FastifyReply
@@ -14,12 +18,7 @@ export async function createAnnotationController(
     tags: z.array(z.string()),
   });
 
-  const annotationsOwnerSchema = z.object({
-    user_id: z.string().uuid(),
-  });
-  
-
-  const { user_id } = annotationsOwnerSchema.parse(request.headers);
+  const { sub: user_id } = request.user as JwtUser;
 
   const { title, content, status, tags } = annotationSchemaBody.parse(
     request.body

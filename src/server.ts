@@ -1,20 +1,24 @@
 import fastify from "fastify";
-import jwtFas from "@fastify/jwt";
+import auth from "@fastify/jwt";
 import nodeCron from "node-cron";
+const app = fastify();
 
 import prisma from "./libs/prisma";
-const app = fastify();
 
 import { userRoute } from "./routes/user";
 import { annotationRoute } from "./routes/annotation";
 import { trashRoute } from "./routes/trash";
+import { tagsRoute } from "./routes/tags";
 
-app.register(jwtFas, {
-  secret: "jwt-secret",
+
+app.register(auth, {
+  secret: 'my-secret-key'
 });
+
 app.register(annotationRoute, { prefix: "annotation" });
 app.register(trashRoute, { prefix: "trash" });
 app.register(userRoute, { prefix: "user" });
+app.register(tagsRoute, { prefix: "tag" });
 
 async function removeAnnotations() {
   try {

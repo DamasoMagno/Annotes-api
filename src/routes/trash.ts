@@ -6,7 +6,15 @@ import { listTrashedAnnotationsController } from "../controllers/trash//list-tra
 import { removeAnnotationsFromTrashController } from "../controllers/trash/remove-annotation-from-trash-controller";
 
 export async function trashRoute(app: FastifyInstance) {
-  app.get("/:ownerId", listTrashedAnnotationsController);
+  app.addHook('preHandler', async (request, reply) => {
+    try {
+      await request.jwtVerify();
+    } catch (error) {
+      reply.status(401).send({ error: 'Unauthorized' });
+    }
+  });
+
+  app.get("/", listTrashedAnnotationsController);
   app.patch("/annotations", removeAnnotationsFromTrashController);
   app.delete("/:annotationId", deleteAnnotationFromTrashController);
   app.delete("/annotations", deleteAnnotationsFromTrashController);
