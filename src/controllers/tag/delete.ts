@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { deleteTagService } from "../../services/tag/delete-tag-service";
+import { deleteTagService } from "../../services/tag/delete";
 
 export async function deleteTagController(
   request: FastifyRequest,

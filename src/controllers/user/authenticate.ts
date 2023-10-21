@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { authenticateUser } from "../../services/user/authenticate-user-service"
+import { authenticateUser } from "../../services/user/authenticate"
 
 export async function authenticateController(
   request: FastifyRequest,

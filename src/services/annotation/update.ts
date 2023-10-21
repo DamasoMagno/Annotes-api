@@ -13,12 +13,19 @@ export async function updateAnnotationService({
   title,
   content,
   user_id,
+  tags
 }: IAnnotationUpdate) {
+  console.log(tags)
+
   const checkAnnotation = await prisma.annotation.findFirst({
     where: {
       id,
     },
   });
+
+  if(!checkAnnotation) {
+    throw new Error("Annotation not find")
+  }
 
   if (
     checkAnnotation?.status === "private" &&
@@ -26,7 +33,7 @@ export async function updateAnnotationService({
   ) {
     throw new Error("You don't have permission to update this annotation");
   }
-
+  
   await prisma.annotation.update({
     where: {
       id,

@@ -30,6 +30,7 @@ export async function createAnnotationService({
     await prisma.tag.create({
       data: {
         name: tag,
+        user_id,
         annotations: {
           create: {
             annotation: {
@@ -43,3 +44,15 @@ export async function createAnnotationService({
     });
   }
 }
+
+// tags: {
+//   create: tags.map(tag => {
+//     return {
+//       tag: {
+//         create: {
+//           name: tag
+//         }
+//       }
+//     }
+//   })
+// }

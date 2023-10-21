@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { listAnnotationsService } from "../../services/annotation/list-annotations-service";
+import { listAnnotationsService } from "../../services/annotation/list";
 
 interface JwtUser {
   sub: string; 

@@ -16,16 +16,19 @@ export async function listAnnotationsService({
       title: {
         contains: title,
       },
+      trashed_at: null,
       user_id,
-      tags: tags ? {
-        some: {
-          tag: {
-            name: {
-              in: tags,
+      tags: tags
+        ? {
+            some: {
+              tag: {
+                name: {
+                  in: tags,
+                },
+              },
             },
-          },
-        },
-      } : {}
+          }
+        : {},
     },
     include: {
       tags: {
@@ -40,13 +43,11 @@ export async function listAnnotationsService({
     },
   });
 
-
   const annotationsFormatted = annotations.map((annotation) => ({
     id: annotation.id,
     title: annotation.title,
     content: annotation.content,
     status: annotation.status,
-    trashed_at: annotation.trashed_at,
     created_at: annotation.created_at,
     updated_at: annotation.updated_at,
     ownerId: annotation.user_id,
@@ -54,7 +55,6 @@ export async function listAnnotationsService({
       name: tagObj.tag.name,
     })),
   }));
-
 
   return annotationsFormatted;
 }

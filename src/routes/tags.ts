@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
 
-import { createTagController } from "../controllers/tag/create-tag-controller";
-import { listTagsController } from "../controllers/tag/list-tags-controller";
-import { deleteTagController } from "../controllers/tag/delete-tag-controller";
+import { createTagController } from "../controllers/tag/create";
+import { listTagsController } from "../controllers/tag/list";
+import { deleteTagController } from "../controllers/tag/delete";
 
 export async function tagsRoute(app: FastifyInstance) {
   app.addHook('preHandler', async (request, reply) => {

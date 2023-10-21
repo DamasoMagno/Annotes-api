@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { createTagService } from "../../services/tag/create-tag-service";
+import { createTagService } from "../../services/tag/create";
 
 interface JwtUser {
   sub: string;

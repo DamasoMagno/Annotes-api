@@ -13,6 +13,10 @@ export async function updateAnnotationStatusService({
     where: { id },
   });
 
+  if(!annotationPrivate) {
+    throw new Error("Annotation not find")
+  }
+
   if (annotationPrivate?.user_id !== user_id) {
     throw new Error("You don't have permission to change this status");
   }

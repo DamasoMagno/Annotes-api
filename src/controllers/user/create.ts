@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { createUserService } from "../../services/user/create-user-service";
+import { createUserService } from "../../services/user/create";
 
 export async function createUserController(
   request: FastifyRequest,

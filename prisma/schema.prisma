@@ -10,17 +10,21 @@ datasource db {
 
 model User {
   id          String       @id @default(uuid())
-  photo_url   String?
   name        String
   email       String
   password    String
   annotations Annotation[]
+  tags        Tag[]
 }
 
 model Tag {
   id          String             @id @default(uuid())
   name        String
   annotations TagsOnAnnotation[]
+  user        User?              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id     String?
+
+  @@index([user_id])
 }
 
 model Annotation {

@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { removeAnnotationFromTrashService } from "../../services/trash/remove-annotation-from-trash-service";
+import { recoverAnnotationFromTrashService } from "../../services/trash/recover-from-trash";
 
-export async function removeAnnotationsFromTrashController(
+export async function recoverAnnotationsFromTrashController(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
@@ -13,7 +13,7 @@ export async function removeAnnotationsFromTrashController(
   const { annotationId } = annotationsOwnerSchema.parse(request.params);
 
   try {
-    await removeAnnotationFromTrashService({ annotationId });
+    await recoverAnnotationFromTrashService({ annotationId });
 
     return reply.status(201).send();
   } catch (error) {

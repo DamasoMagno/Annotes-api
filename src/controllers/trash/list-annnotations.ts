@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
-import { listTrashedAnnotationsService } from "../../services/trash/list-trashed-annotations-service";
+import { listTrashedAnnotationsService } from "../../services/trash/list-annotations";
 
 interface JwtUser {
   sub: string; 

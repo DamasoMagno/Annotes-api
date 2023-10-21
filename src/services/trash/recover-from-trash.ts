@@ -4,7 +4,7 @@ interface IAnnotationTrash {
   annotationId: string;
 }
 
-export async function removeAnnotationFromTrashService({
+export async function recoverAnnotationFromTrashService({
   annotationId,
 }: IAnnotationTrash) {
   const checkAnnotationIsDelete = await prisma.annotation.findFirst({

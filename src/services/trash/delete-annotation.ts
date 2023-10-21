@@ -7,19 +7,15 @@ interface IAnnotationTrash {
 export async function deleteAnnotationFromTrashService({
   annotationId,
 }: IAnnotationTrash) {
-  const checkAnnotationIsTrashed = await prisma.annotation.findFirst({
+  await prisma.tagsOnAnnotation.deleteMany({
     where: {
-      id: annotationId,
+      annotation_id: annotationId
     },
-  });
-
-  if (checkAnnotationIsTrashed?.trashed_at) {
-    throw new Error("This annotation removed from system");
-  }
+  }); 
 
   await prisma.annotation.delete({
     where: {
-      id: annotationId,
-    },
-  });
+      id: annotationId
+    }
+  })
 }
