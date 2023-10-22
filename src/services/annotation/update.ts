@@ -13,18 +13,16 @@ export async function updateAnnotationService({
   title,
   content,
   user_id,
-  tags
+  tags,
 }: IAnnotationUpdate) {
-  console.log(tags)
-
   const checkAnnotation = await prisma.annotation.findFirst({
     where: {
       id,
     },
   });
 
-  if(!checkAnnotation) {
-    throw new Error("Annotation not find")
+  if (!checkAnnotation) {
+    throw new Error("Annotation not find");
   }
 
   if (
@@ -33,7 +31,7 @@ export async function updateAnnotationService({
   ) {
     throw new Error("You don't have permission to update this annotation");
   }
-  
+
   await prisma.annotation.update({
     where: {
       id,
@@ -43,4 +41,44 @@ export async function updateAnnotationService({
       content,
     },
   });
+
+  for (const tagName of tags ?? []) {
+    let tag = await prisma.tag.findFirst({
+      where: {
+        name: tagName,
+      },
+    });
+  
+    if (!tag) {
+      const createdTag = await prisma.tag.create({
+        data: {
+          name: tagName,
+        },
+      });
+      
+      tag = createdTag;
+    }
+  
+    await prisma.tagsOnAnnotation.upsert({
+      where: {
+        tag_id_annotation_id: {
+          annotation_id: id,
+          tag_id: String(tag?.id),
+        },
+      },
+      create: {
+        annotation: {
+          connect: {
+            id,
+          },
+        },
+        tag: {
+          connect: {
+            id: String(tag?.id),
+          },
+        },
+      },
+      update: {},
+    });
+  }
 }
